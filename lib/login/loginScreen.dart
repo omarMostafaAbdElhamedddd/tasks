@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/signup/signupScreen.dart';
 
 import '../forgetPassword/forgetpasswordscreen.dart';
 import '../helper/customWidgets/customButton.dart';
@@ -81,9 +82,18 @@ class LoginScreen extends StatelessWidget {
 
                 CustomButton(text: "Login",),
 
-                const SizedBox(height: 20),
-                const Center(
-                  child: Text("Don't have an account? Create Account"),
+                const SizedBox(height: 16),
+
+                 Center(
+                  child: TextButton(onPressed:(){
+                    Navigator.push(context,PageRouteBuilder(pageBuilder:(context,sn,sc){
+                      return CreateAccountScreen();
+                    }));
+
+                  }, child: Text("Don't have an account? Create Account", style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500
+                  ),)),
                 ),
               ],
             ),
