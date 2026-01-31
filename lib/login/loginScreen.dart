@@ -8,7 +8,6 @@ import '../helper/customWidgets/logoWidget.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
