@@ -8,6 +8,7 @@ import '../helper/customWidgets/logoWidget.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,11 +41,11 @@ class LoginScreen extends StatelessWidget {
                 CustomTextFormField(
                   prifixIcon: Icons.email_outlined,
                   hintText:"Enter Email",
-          
+
                 ),
-          
-          
-          
+
+
+
                 const SizedBox(height: 20),
                 Text("Password",style: TextStyle(
                     fontSize: 16,
@@ -55,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                   prifixIcon: Icons.lock_outline_sharp,
                   hintText:"Enter Password",
                 ),
-          
+
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -67,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                             return ForgotPasswordScreen();
                         })
                         );
-          
+
                       },
                       child: const Text(
                         "Forgot Password?",
@@ -78,9 +79,9 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 30),
-          
+
                 CustomButton(text: "Login",),
-          
+
                 const SizedBox(height: 20),
                 const Center(
                   child: Text("Don't have an account? Create Account"),
