@@ -3,6 +3,7 @@ import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
 
 import '../helper/customWidgets/customTextFormField.dart';
+import '../helper/customWidgets/logoWidget.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
@@ -30,17 +31,27 @@ class ForgotPasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
+                SizedBox(height: 24,),
 
+                Center(child: LogoWidget()),
+
+                SizedBox(height: 32,),
+
+                Text("Email address",style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+                ),),
+                SizedBox(height: 4,),
                 CustomTextFormField(
                   prifixIcon: Icons.email_outlined,
                   hintText:"Enter Email",
-
                 ),
 
 
                 const SizedBox(height: 32),
+
               CustomButton(text:"Continue"),
+
                 const SizedBox(height: 20),
               ],
             ),
