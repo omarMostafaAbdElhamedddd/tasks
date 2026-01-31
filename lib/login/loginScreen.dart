@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/home/homeScreen.dart';
 import 'package:tasks/signup/signupScreen.dart';
 
 import '../forgetPassword/forgetpasswordscreen.dart';
@@ -80,7 +81,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                CustomButton(text: "Login",),
+                CustomButton(
+                  text: "Login",
+                  onTap: (){
+                    Navigator.push(context, PageRouteBuilder(pageBuilder:(context,sn,sc){
+                      return HomeScreen();
+                    }));
+                  },
+                ),
 
                 const SizedBox(height: 16),
 
