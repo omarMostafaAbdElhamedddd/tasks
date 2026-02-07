@@ -2,18 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:tasks/helper/color.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({super.key, required this.hintText,this.prifixIcon});
+  const CustomTextFormField({super.key, required this.hintText,
+    this.maxLines=1,
+    this.prifixIcon, this.controller});
 
   final String hintText;
   final IconData? prifixIcon;
+  final TextEditingController? controller;
+  final int maxLines;
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
+      maxLines: maxLines,
+      controller: controller,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16, vertical: 16
+        ),
         fillColor: Colors.grey.withAlpha(30),
         filled: true,
         
-        prefixIcon: Icon(prifixIcon),
+        prefixIcon:prifixIcon == null? null:Icon(prifixIcon),
 
         hintStyle: TextStyle(
           fontSize: 14
