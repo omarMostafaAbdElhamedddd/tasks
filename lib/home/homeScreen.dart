@@ -4,6 +4,8 @@ import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
 import 'package:tasks/notofications/notoficationScreen.dart';
 
+import '../profile/profileScreen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -42,6 +44,8 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   Spacer(),
+
+
                   InkWell(
                       onTap:(){
                         Navigator.push(context,PageRouteBuilder(pageBuilder: (context,an,sc){
@@ -49,6 +53,14 @@ class HomeScreen extends StatelessWidget {
                         }));
                       },
                       child: Image.asset("assets/notification.png", height: 24)),
+                  SizedBox(width: 16,),
+                  InkWell(
+                      onTap:(){
+                        Navigator.push(context,PageRouteBuilder(pageBuilder: (context,an,sc){
+                          return ProfileScreen();
+                        }));
+                      },
+                      child: Icon(Icons.person_pin_outlined)),
                 ],
               ),
               SizedBox(height: 16),
