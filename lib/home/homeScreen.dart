@@ -36,10 +36,46 @@ class HomeScreen extends StatelessWidget {
                   Image.asset("assets/notification.png", height: 24,)
                 ],
               ),
+              SizedBox(height: 15,),
+              Expanded(
+                child: ListView.builder(itemBuilder: (context,index){
+                  return Taskitem();
+                }),
+              )            
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class Taskitem extends StatelessWidget {
+  const Taskitem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black.withAlpha(150))),
+      child: Column(
+            children: [
+              Text("Football Training", style: TextStyle(
+                color: Colors.black,fontSize: 15
+                ),
+                ),
+              Text("I have football training and i need to get my soccer ball", style: TextStyle(
+                color: Colors.black.withAlpha(150)
+                ),
+                ),
+                Text("I need to be ready at 11-2-2026 at 7pm",style: TextStyle(
+                color: Colors.black.withAlpha(150)
+                ),
+                )
+            ],
+          )
+        
+      );
   }
 }
