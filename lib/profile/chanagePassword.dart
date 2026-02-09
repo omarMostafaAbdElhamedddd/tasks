@@ -25,21 +25,21 @@ class ChanagePassword extends StatelessWidget {
         Text('current password'),
         SizedBox(height: 4,),
         CustomTextFormField(
-          prifixIcon: Icons.lock,
+          prifixIcon: Icons.lock_outline,
           hintText: 'current password'),
           SizedBox(height: 16,),
 
                   Text('new password'),
         SizedBox(height: 4,),
         CustomTextFormField(
-          prifixIcon: Icons.lock,
+          prifixIcon: Icons.lock_outline,
           hintText: 'new password'),
           SizedBox(height: 16,),
 
                   Text('confirm password'),
         SizedBox(height: 4,),
         CustomTextFormField(
-          prifixIcon: Icons.lock,
+          prifixIcon: Icons.lock_outline,
           hintText: 'confirm password'),
 
           Spacer(),
