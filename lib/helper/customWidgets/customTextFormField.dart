@@ -4,18 +4,22 @@ import 'package:tasks/helper/color.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({super.key, required this.hintText,
     this.maxLines=1,
+    this.validator,
     this.prifixIcon, this.controller});
 
   final String hintText;
   final IconData? prifixIcon;
   final TextEditingController? controller;
   final int maxLines;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
       maxLines: maxLines,
       controller: controller,
+      validator: validator,
       decoration: InputDecoration(
+
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16, vertical: 16
         ),
