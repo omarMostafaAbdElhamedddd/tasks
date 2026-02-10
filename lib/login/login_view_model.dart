@@ -15,11 +15,6 @@ class LoginViewModel extends GetxController {
 
   final RxBool isLoading = false.obs;
   final RxBool isPasswordVisible = false.obs;
-  final RxBool showVerificationDialog = false.obs;
-  final RxBool isResendingEmail = false.obs;
-  final RxBool isCheckingVerification = false.obs;
-  final RxInt verificationCount = 60.obs;
-  Timer? _verificationTimer;
 
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
@@ -28,20 +23,6 @@ class LoginViewModel extends GetxController {
     passwordController.dispose();
 
     super.onClose();
-  }
-
-  void startVerificationCountdown() {
-    verificationCount.value = 60;
-
-    _verificationTimer?.cancel();
-
-    _verificationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (verificationCount.value > 0) {
-        verificationCount.value--;
-      } else {
-        timer.cancel();
-      }
-    });
   }
 
   void togglePasswordVisibility() {
@@ -78,32 +59,7 @@ class LoginViewModel extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> resendVerificationEmail(BuildContext context) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
 
-    isResendingEmail.value = true;
-
-    try {
-      await user.sendEmailVerification();
-      MessageUtils.showSnackBar(
-        context: context,
-        message: "Verification email sent successfully",
-        baseStatus: BaseStatus.success,
-      );
-      await user.reload();
-      verificationCount.value = 60;
-      startVerificationCountdown();
-    } catch (e) {
-      MessageUtils.showSnackBar(
-        context: context,
-        message: "An error occurred while logging in.",
-        baseStatus: BaseStatus.error,
-      );
-    } finally {
-      isResendingEmail.value = false;
-    }
-  }
 
 
 
