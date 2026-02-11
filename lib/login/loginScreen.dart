@@ -51,6 +51,7 @@ class LoginScreen extends StatelessWidget {
                         ),),
                         SizedBox(height: 4,),
                         CustomTextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           controller: vm.emailController,
                           validator: (data){
                             if(data!.isEmpty){

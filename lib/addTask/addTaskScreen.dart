@@ -57,7 +57,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
+      bottomNavigationBar: SizedBox(
+        height: 80,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          child: CustomButton(
+            text: "Add Task",
+            onTap: () {
+              if (!_formKey.currentState!.validate()){
+
+              };
+            },
+          ),
+        ),
+      ),
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: AppColors.whiteColor,
         elevation: 0,
         title: const Text(
@@ -69,94 +84,113 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              CustomTextFormField(
-                controller: taskNameController,
-                hintText: "Task name",
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "Task name is required";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              CustomTextFormField(
-                controller: descController,
-                hintText: "Description",
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "Task Description is required";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              GestureDetector(
-                onTap: pickDueDateTime,
-                child: AbsorbPointer(
-                  child: CustomTextFormField(
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return "${dueDateText} is required";
-                      }
-                      return null;
-                    },
-                    hintText: dueDateText,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16,),
+                Text("Task name",style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+                ),),
+                SizedBox(height: 4,),
+                CustomTextFormField(
+                  controller: taskNameController,
+                  hintText: "Task name",
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Task name is required";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                Text("Task description",style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
+                SizedBox(height: 4,),
+                CustomTextFormField(
+                  controller: descController,
+                  hintText: "Description",
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Task Description is required";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                Text("Due date and time",style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
+                SizedBox(height: 4,),
+                GestureDetector(
+                  onTap: pickDueDateTime,
+                  child: AbsorbPointer(
+                    child: CustomTextFormField(
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "${dueDateText} is required";
+                        }
+                        return null;
+                      },
+                      hintText: dueDateText,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<int>(
-                value: reminderMinutes,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.withAlpha(30),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey.withAlpha(200),
+                const SizedBox(height: 16),
+                Text("Minutes before for remember",style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
+                SizedBox(height: 4,),
+                DropdownButtonFormField<int>(
+                  value: reminderMinutes,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey.withAlpha(30),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey.withAlpha(200),
+                      ),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColors.greyColor,
-                      width: .5,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.greyColor,
+                        width: .5,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    borderRadius: BorderRadius.circular(12),
                   ),
+                  items: reminderOptions.map((minutes) {
+                    String text;
+                    if (minutes == 0) {
+                      text = "No reminder";
+                    } else if (minutes == 60) {
+                      text = "1 hour before";
+                    } else {
+                      text = "$minutes minutes before";
+                    }
+                    return DropdownMenuItem(
+                      value: minutes,
+                      child: Text(text),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      reminderMinutes = value!;
+                    });
+                  },
                 ),
-                items: reminderOptions.map((minutes) {
-                  String text;
-                  if (minutes == 0) {
-                    text = "No reminder";
-                  } else if (minutes == 60) {
-                    text = "1 hour before";
-                  } else {
-                    text = "$minutes minutes before";
-                  }
-                  return DropdownMenuItem(
-                    value: minutes,
-                    child: Text(text),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    reminderMinutes = value!;
-                  });
-                },
-              ),
-              const Spacer(),
-              CustomButton(
-                text: "Add Task",
-                onTap: () {
-                  if (!_formKey.currentState!.validate()){
-
-                  };
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

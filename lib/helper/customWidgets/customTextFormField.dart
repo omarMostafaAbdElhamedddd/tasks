@@ -5,6 +5,7 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({super.key, required this.hintText,
     this.maxLines=1,
     this.validator,
+    this.keyboardType,
     this.prifixIcon, this.controller});
 
   final String hintText;
@@ -12,13 +13,18 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final int maxLines;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
+    keyboardType : keyboardType,
+
+
       maxLines: maxLines,
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
+
 
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16, vertical: 16
