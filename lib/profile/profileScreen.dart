@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/profile/chanageName.dart';
+import 'package:tasks/helper/color.dart';
+import 'package:tasks/profile/chanagePassword.dart';
 
 import '../helper/color.dart';
 
@@ -85,25 +87,34 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
 
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey.withAlpha(30),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.withAlpha(160)),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Change your pasword",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: (){
+                Navigator.push(
+                  context,PageRouteBuilder(pageBuilder:(context,an,sc){
+                    return ChanagePassword();
+                  })
+                  );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withAlpha(30),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.withAlpha(160)),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      "Change your pasword",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
-                ],
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 16),
