@@ -3,6 +3,8 @@
 
 
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,10 @@ class AddNewTaskModel extends GetxController {
   TextEditingController desController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
+
   final RxBool isLoading = false.obs;
+  final RxBool succes = false.obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -33,21 +38,27 @@ class AddNewTaskModel extends GetxController {
   }
 
 
-  Future<void> addnewTask(BuildContext context) async {
+  Future<void> addnewTask(BuildContext context, String dueDate,int minutes) async {
+    isLoading.value = true;
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        final userData = {
+        final taskData = {
           'uid': user.uid,
           'name': nameController.text,
           'des': desController.text,
           'created At': DateTime.now().toIso8601String(),
-          "endDate" : ""
+          "dueDateTime" :dueDate ,
+          "rememberMinutes": minutes,
         };
 
         await FirebaseFirestore.instance
             .collection('tasks').doc()
-            .set(userData);
+            .set(taskData);
+
+        succes.value =true;
+        resetForm();
+
       }
     } catch (e) {
       MessageUtils.showSnackBar(
@@ -56,5 +67,12 @@ class AddNewTaskModel extends GetxController {
       );
       rethrow;
     }
+    isLoading.value=false;
+
+  }
+
+  void resetForm(){
+    nameController.clear();
+    desController.clear();
   }
 }

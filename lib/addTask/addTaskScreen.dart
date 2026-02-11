@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:tasks/addTask/addNewTaskModelView.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customTextFormField.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
+
+import '../helper/customWidgets/fullPageLoading.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -12,9 +17,6 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController taskNameController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
-
   DateTime? dueDateTime;
   int reminderMinutes = 0;
 
@@ -55,7 +57,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final vm = Get.put(AddNewTaskModel());
+
+    return Obx(()=>Stack(
+      children: [
+      Scaffold(
       backgroundColor: AppColors.whiteColor,
       bottomNavigationBar: SizedBox(
         height: 80,
@@ -64,7 +70,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: CustomButton(
             text: "Add Task",
             onTap: () {
-              if (!_formKey.currentState!.validate()){
+              if (_formKey.currentState!.validate()){
+                vm.addnewTask(context, dueDateText, reminderMinutes);
 
               };
             },
@@ -84,19 +91,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16,),
                 Text("Task name",style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
                 ),),
                 SizedBox(height: 4,),
                 CustomTextFormField(
-                  controller: taskNameController,
+                  controller: vm.nameController,
                   hintText: "Task name",
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -113,7 +121,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),),
                 SizedBox(height: 4,),
                 CustomTextFormField(
-                  controller: descController,
+                  controller: vm.desController,
                   hintText: "Description",
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -134,7 +142,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   child: AbsorbPointer(
                     child: CustomTextFormField(
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (dueDateText == "Due date & time") {
                           return "${dueDateText} is required";
                         }
                         return null;
@@ -194,6 +202,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           ),
         ),
       ),
-    );
+    ),
+        Visibility(
+            visible: vm.isLoading.value,
+            child: FullPageLoadingWidget()),
+      ],
+    ));
   }
 }
