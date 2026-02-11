@@ -16,23 +16,11 @@ class SignUpModel extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isPasswordVisible = false.obs;
   final RxBool isConfirmPasswordVisible = false.obs;
-  final RxBool isLevelFocused = false.obs;
-
-  final FocusNode nameFocus = FocusNode();
-  final FocusNode emailFocus = FocusNode();
-  final FocusNode passwordFocus = FocusNode();
-  final FocusNode confirmPasswordFocus = FocusNode();
-
-  final RxString selectedLevel = ''.obs;
-
-  final RxString selectedCountry = ''.obs;
-  final RxInt selectedIndex = (-1).obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
-    selectedIndex.value = 0;
     super.onInit();
   }
 
@@ -41,10 +29,6 @@ class SignUpModel extends GetxController {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    nameFocus.dispose();
-    emailFocus.dispose();
-    passwordFocus.dispose();
-    confirmPasswordFocus.dispose();
 
     super.onClose();
   }

@@ -3,8 +3,55 @@ import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customTextFormField.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController taskNameController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+
+  DateTime? dueDateTime;
+  int reminderMinutes = 0;
+
+  final List<int> reminderOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60];
+
+  Future<void> pickDueDateTime() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) return;
+
+    setState(() {
+      dueDateTime = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+    });
+  }
+
+  String get dueDateText {
+    if (dueDateTime == null) return "Due date & time";
+    return "${dueDateTime!.day}/${dueDateTime!.month}/${dueDateTime!.year}   ${dueDateTime!.hour}:${dueDateTime!.minute.toString().padLeft(2, '0')}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,55 +60,106 @@ class AddTaskScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.whiteColor,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "Add task",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            CustomTextFormField(
-              hintText: "Task name",
-            ),
-
-            const SizedBox(height: 16),
-
-            CustomTextFormField(
-              hintText: "Description",
-            ),
-
-            const SizedBox(height: 16),
-
-            GestureDetector(
-              onTap: () async {
-                await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2100),
-                );
-              },
-              child: AbsorbPointer(
-                child: CustomTextFormField(
-                  hintText: "Due date",
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: taskNameController,
+                hintText: "Task name",
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "Task name is required";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              CustomTextFormField(
+                controller: descController,
+                hintText: "Description",
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "Task Description is required";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              GestureDetector(
+                onTap: pickDueDateTime,
+                child: AbsorbPointer(
+                  child: CustomTextFormField(
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "${dueDateText} is required";
+                      }
+                      return null;
+                    },
+                    hintText: dueDateText,
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<int>(
+                value: reminderMinutes,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.withAlpha(30),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.withAlpha(200),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.greyColor,
+                      width: .5,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                items: reminderOptions.map((minutes) {
+                  String text;
+                  if (minutes == 0) {
+                    text = "No reminder";
+                  } else if (minutes == 60) {
+                    text = "1 hour before";
+                  } else {
+                    text = "$minutes minutes before";
+                  }
+                  return DropdownMenuItem(
+                    value: minutes,
+                    child: Text(text),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    reminderMinutes = value!;
+                  });
+                },
+              ),
+              const Spacer(),
+              CustomButton(
+                text: "Add Task",
+                onTap: () {
+                  if (!_formKey.currentState!.validate()){
 
-            const Spacer(),
-
-            CustomButton(
-              text: "Add Task",
-            ),
-          ],
+                  };
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
