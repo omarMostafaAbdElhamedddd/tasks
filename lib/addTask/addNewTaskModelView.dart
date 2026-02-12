@@ -76,10 +76,10 @@ class AddNewTaskModel extends GetxController {
         await FirebaseFirestore.instance.collection('tasks').doc().set(taskData);
 
         succes.value = true;
-              MessageUtils.showSnackBar(
+      MessageUtils.showSnackBar(
         context: context,
         message: "task add succesfly",
-        baseStatus: BaseStatus.error,
+        baseStatus: BaseStatus.success,
       );
         resetForm();
       }
