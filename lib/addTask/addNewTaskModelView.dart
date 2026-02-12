@@ -57,7 +57,13 @@ class AddNewTaskModel extends GetxController {
             .set(taskData);
 
         succes.value =true;
+              MessageUtils.showSnackBar(
+        context: context,
+        message: "Task created successfully",
+        baseStatus: BaseStatus.success,
+      );
         resetForm();
+
 
       }
     } catch (e) {
