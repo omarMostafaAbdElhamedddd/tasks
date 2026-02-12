@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tasks/addTask/addTaskScreen.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
@@ -77,16 +78,24 @@ class HomeScreen extends StatelessWidget {
                       return  Expanded(child: Center(child: CupertinoActivityIndicator(color: AppColors.primaryColor, radius: 16)));
                     }else if(sna.hasData){
                       if(sna.data!.docs.length==0){
-                        return Expanded(child: Center(child: Text("no tasks add yet"),));
+                        return Expanded(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset("assets/noData.svg", height: 130,),
+                            SizedBox(height: 12,),
+                            Text("No tasks added yet!"),
+                          ],
+                        ));
+                      }else{
+                        return  Expanded(
+                          child: ListView.builder(
+                            itemCount: sna.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              return TaskItemWidget(taskData: sna.data!.docs[index],);
+                            },
+                          ),
+                        );
                       }
-                      return  Expanded(
-                        child: ListView.builder(
-                          itemCount: sna.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            return TaskItemWidget(taskData: sna.data!.docs[index],);
-                          },
-                        ),
-                      );
                     }else if(sna.hasError){
                       return Expanded(child: Center(child: Text("Something went wrong"),));
                     }else {

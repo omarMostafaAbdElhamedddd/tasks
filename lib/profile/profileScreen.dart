@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tasks/profile/chanageName.dart';
 import 'package:tasks/helper/color.dart';
@@ -40,22 +43,47 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Mahmoud ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "mahmoudelshawy2010@gmail.com ",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
+
+
+            StreamBuilder(
+                stream: FirebaseFirestore.instance.collection("Users").where(
+                  "uid",isEqualTo: FirebaseAuth.instance.currentUser!.uid
+                ).snapshots(),
+                builder: (context,sna){
+                  if(sna.connectionState==ConnectionState.waiting){
+                    return Center(child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: CupertinoActivityIndicator(color: AppColors.primaryColor, radius: 16),
+                    ));
+                  }
+                  else if(sna.hasData){
+                    return Column(
+                      children: [
+                         Center(
+                          child: Text(
+                            sna.data!.docs[0]["name"],
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                        sna.data!.docs[0]["email"],
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                      ],
+                    );
+                  }
+                  else if(sna.hasError){
+                    return Center(child: Text("Something went wrong"),);
+                  }else{
+                    return SizedBox();
+                  }
+
+
+
+                }),
+
+
             SizedBox(height: 32),
             GestureDetector(onTap: (){
               Navigator.push(context,PageRouteBuilder(pageBuilder:(context,an,sc){
