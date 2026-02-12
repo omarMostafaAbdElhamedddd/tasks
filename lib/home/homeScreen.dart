@@ -76,6 +76,9 @@ class HomeScreen extends StatelessWidget {
                     if(sna.connectionState==ConnectionState.waiting){
                       return  Expanded(child: Center(child: CupertinoActivityIndicator(color: AppColors.primaryColor, radius: 16)));
                     }else if(sna.hasData){
+                      if(sna.data!.docs.length==0){
+                        return Expanded(child: Center(child: Text("no tasks add yet"),));
+                      }
                       return  Expanded(
                         child: ListView.builder(
                           itemCount: sna.data!.docs.length,
