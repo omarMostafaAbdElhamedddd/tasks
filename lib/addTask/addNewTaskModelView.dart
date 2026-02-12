@@ -1,78 +1,105 @@
-
-
-
-
-
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../helper/custom_snack_bar.dart';
-
 
 class AddNewTaskModel extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController desController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-
 
   final RxBool isLoading = false.obs;
   final RxBool succes = false.obs;
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final Rx<DateTime?> dueDateTime = Rx<DateTime?>(null);
+  final RxInt reminderMinutes = 0.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
+  final List<int> reminderOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60];
+
+  String get dueDateText {
+    if (dueDateTime.value == null) return "Due date & time";
+    final d = dueDateTime.value!;
+    return "${d.day}/${d.month}/${d.year}   ${d.hour}:${d.minute.toString().padLeft(2, '0')}";
   }
 
-  @override
-  void onClose() {
-    nameController.dispose();
-    desController.dispose();
+  Future<void> pickDueDateTime(BuildContext context) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
 
-    super.onClose();
+    if (pickedDate == null) return;
+
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) return;
+
+    dueDateTime.value = DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
+    );
   }
 
+  Future<void> addnewTask(BuildContext context) async {
+    if (dueDateTime.value == null) {
+      MessageUtils.showSnackBar(
+        message: "Due date is required",
+        baseStatus: BaseStatus.error,
+        context: context,
+      );
+      return;
+    }
 
-  Future<void> addnewTask(BuildContext context, String dueDate,int minutes) async {
     isLoading.value = true;
+
     try {
       final user = FirebaseAuth.instance.currentUser;
+
       if (user != null) {
         final taskData = {
           'uid': user.uid,
           'name': nameController.text,
           'des': desController.text,
           'created At': DateTime.now().toIso8601String(),
-          "dueDateTime" :dueDate ,
-          "rememberMinutes": minutes,
+          "dueDateTime": dueDateText,
+          "rememberMinutes": reminderMinutes.value,
         };
 
-        await FirebaseFirestore.instance
-            .collection('tasks').doc()
-            .set(taskData);
+        await FirebaseFirestore.instance.collection('tasks').doc().set(taskData);
 
-        succes.value =true;
+        succes.value = true;
         resetForm();
-
       }
     } catch (e) {
       MessageUtils.showSnackBar(
         message: "Failed To add task",
-        baseStatus: BaseStatus.error, context: context,
+        baseStatus: BaseStatus.error,
+        context: context,
       );
-      rethrow;
     }
-    isLoading.value=false;
 
+    isLoading.value = false;
   }
 
-  void resetForm(){
+  void resetForm() {
     nameController.clear();
     desController.clear();
+    dueDateTime.value = null;
+    reminderMinutes.value = 0;
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    desController.dispose();
+    super.onClose();
   }
 }
