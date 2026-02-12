@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tasks/addTask/addTaskScreen.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
 import 'package:tasks/notofications/notoficationScreen.dart';
 
+import '../helper/customWidgets/fullPageLoading.dart';
 import '../profile/profileScreen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,9 +18,9 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       bottomNavigationBar: SizedBox(
-        height: 84,
+        height: 80,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: const EdgeInsets.only(top: 4,left: 16, right: 16, bottom: 16),
           child: CustomButton(
             text: "Add new task",
             onTap: () {
@@ -65,13 +69,29 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
 
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return TaskItemWidget();
-                  },
-                ),
-              ),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection("tasks").where("uid",isEqualTo:FirebaseAuth.instance.currentUser!.uid )
+                      .orderBy("created At", descending: true).snapshots(),
+                  builder: (context,sna){
+                    if(sna.connectionState==ConnectionState.waiting){
+                      return  Expanded(child: Center(child: CupertinoActivityIndicator(color: AppColors.primaryColor, radius: 16)));
+                    }else if(sna.hasData){
+                      return  Expanded(
+                        child: ListView.builder(
+                          itemCount: sna.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return TaskItemWidget(taskData: sna.data!.docs[index],);
+                          },
+                        ),
+                      );
+                    }else if(sna.hasError){
+                      return Expanded(child: Center(child: Text("Something went wrong"),));
+                    }else {
+                      return SizedBox();
+                    }
+                  }
+              )
+
             ],
           ),
         ),
@@ -81,8 +101,9 @@ class HomeScreen extends StatelessWidget {
 }
 
 class TaskItemWidget extends StatelessWidget {
-  const TaskItemWidget({super.key});
+  const TaskItemWidget({super.key, required this.taskData});
 
+  final dynamic taskData;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,7 +120,7 @@ class TaskItemWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Football Training",
+                taskData["name"],
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               Spacer(),
@@ -129,14 +150,14 @@ class TaskItemWidget extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "I have football training and i need to get my soccer ball",
+          taskData["des"],
             style: TextStyle(color: Colors.black.withAlpha(150), fontSize: 14),
           ),
           SizedBox(height: 4,),
           Row(
             children: [
               Text(
-                "11-2-2026 at 7pm",
+                taskData["created At"],
                 style: TextStyle(color: Colors.black.withAlpha(150),
                 fontSize: 12,
                   fontWeight: FontWeight.w500
@@ -144,7 +165,7 @@ class TaskItemWidget extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                "11-11-2026 at 7pm",
+                taskData["dueDateTime"],
                 style: TextStyle(
                   color: Colors.blue,
                   fontSize: 12,
