@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       bottomNavigationBar: SizedBox(
-        height: 80,
+        height: 74,
         child: Padding(
           padding: const EdgeInsets.only(top: 4,left: 16, right: 16, bottom: 16),
           child: CustomButton(
