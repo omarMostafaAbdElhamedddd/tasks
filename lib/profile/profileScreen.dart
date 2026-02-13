@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tasks/login/loginScreen.dart';
 import 'package:tasks/profile/chanageName.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/profile/chanagePassword.dart';
 
 import '../helper/color.dart';
+import '../helper/custom_snack_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -172,27 +174,44 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 32),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.red.withAlpha(30),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.red.withAlpha(160)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Logout",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: (){
+                try {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder: (context,an,sc){
+                    return LoginScreen();
+                  }));
+
+                } on Exception catch (e) {
+                  MessageUtils.showSnackBar(
+                    context: context,
+                    baseStatus: BaseStatus.error,
+                    message: "Something went wrong",
+                  );
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.red.withAlpha(30),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.withAlpha(160)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 12,),
-                  Icon(Icons.logout, color: Colors.red, size: 16),
-                ],
+                    SizedBox(width: 12,),
+                    Icon(Icons.logout, color: Colors.red, size: 16),
+                  ],
+                ),
               ),
             ),
           ],
