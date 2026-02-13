@@ -8,8 +8,6 @@ import 'package:tasks/addTask/addTaskScreen.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
 import 'package:tasks/notofications/notoficationScreen.dart';
-
-import '../helper/customWidgets/fullPageLoading.dart';
 import '../profile/profileScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,33 +18,71 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
- void showDeleteDialog(int index) {
+ void showDeleteDialog(String taskId) {
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text("Delete Task"),
-        content: Text("Are you sure you want to delete this task?"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close dialog
-            },
-            child: Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                
-              });
-              Navigator.pop(context); // Close dialog
-            },
-            child: Text(
-              "Delete",
-              style: TextStyle(color: Colors.red),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Delete Task",style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600
+            ),),
+            SizedBox(height: 8,),
+            Text("Are you sure you want to delete this task?", style: TextStyle(
+              fontSize: 14,
+            ),),
+            SizedBox(height: 24,),
+
+            Row(
+              children: [
+                Expanded(child:   InkWell(
+
+                 onTap: (){
+                   Navigator.pop(context);
+                 },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.black.withAlpha(150))
+                        ),
+                        child: Center(
+                          child: Text("Cancel", style: TextStyle(
+                            fontSize: 14
+                          ),),
+                        ),
+                      ),
+                ), ),
+                SizedBox(width: 16,),
+                Expanded(child:   InkWell(
+                  onTap: (){
+
+                     FirebaseFirestore.instance.collection("tasks").doc(taskId).delete();
+                     Navigator.pop(context);
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.red
+                    ),
+                    child: Center(
+                      child: Text("Delete", style: TextStyle(
+                        color: Colors.white,
+                          fontSize: 14
+                      ),),
+                    ),
+                  ),
+                ), ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
+
       );
     },
   );
@@ -131,7 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             itemCount: sna.data!.docs.length,
                             itemBuilder: (context, index) {
-                              return TaskItemWidget(taskData: sna.data!.docs[index],deletefunction: showDeleteDialog,);
+                              return TaskItemWidget(taskData: sna.data!.docs[index],deletefunction: (){
+                                showDeleteDialog(sna.data!.docs[index].id);
+                              },);
                             },
                           ),
                         );
@@ -154,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class TaskItemWidget extends StatelessWidget {
   const TaskItemWidget({super.key, required this.taskData, required this.deletefunction});
-final dynamic deletefunction;
+final Function() deletefunction;
   final dynamic taskData;
   @override
   Widget build(BuildContext context) {
