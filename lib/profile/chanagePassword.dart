@@ -23,67 +23,69 @@ class _ChanagePasswordState extends State<ChanagePassword> {
   
 
   ),
-  body: Padding(
-    padding: EdgeInsets.all(16),
-    child: Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('current password'),
-          SizedBox(height: 4,),
-          CustomTextFormField(
-            prifixIcon: Icons.lock_outline,
-            hintText: 'current password',
-               validator: (data){
-                              if(data!.isEmpty){
-                                return "Please enter your current password";
-                              }
-                            },
-            
-            
-            ),
-            SizedBox(height: 16,),
-      
-                    Text('new password'),
-          SizedBox(height: 4,),
-          CustomTextFormField(
-            prifixIcon: Icons.lock_outline,
-            hintText: 'new password',
-             
-                validator: (data){
-                              if(data!.isEmpty){
-                                return "Please enter your new password";
-                              }
-                            },
-            
-            ),
-            SizedBox(height: 16,),
-      
-                    Text('confirm password'),
-          SizedBox(height: 4,),
-          CustomTextFormField(
-            prifixIcon: Icons.lock_outline,
-            hintText: 'confirm password',
-               validator: (data){
-                              if(data!.isEmpty){
-                                return "Please confirm your new password";
-                              }
-                            },
-            ),
-      
-            Spacer(),
-      
-            CustomButton(
-              onTap: (){
-                if(formKey.currentState!.validate()){
-
-                }
-              },
-              text: 'change password' ),
-        ],
+  body: SingleChildScrollView(
+    child: Padding(
+      padding: EdgeInsets.all(16),
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('current password'),
+            SizedBox(height: 4,),
+            CustomTextFormField(
+              prifixIcon: Icons.lock_outline,
+              hintText: 'current password',
+                 validator: (data){
+                                if(data!.isEmpty){
+                                  return "Please enter your current password";
+                                }
+                              },
+              
+              
+              ),
+              SizedBox(height: 16,),
         
+                      Text('new password'),
+            SizedBox(height: 4,),
+            CustomTextFormField(
+              prifixIcon: Icons.lock_outline,
+              hintText: 'new password',
+               
+                  validator: (data){
+                                if(data!.isEmpty){
+                                  return "Please enter your new password";
+                                }
+                              },
+              
+              ),
+              SizedBox(height: 16,),
+        
+                      Text('confirm password'),
+            SizedBox(height: 4,),
+            CustomTextFormField(
+              prifixIcon: Icons.lock_outline,
+              hintText: 'confirm password',
+                 validator: (data){
+                                if(data!.isEmpty){
+                                  return "Please confirm your new password";
+                                }
+                              },
+              ),
+        
+              SizedBox(height: 32,),
+        
+              CustomButton(
+                onTap: (){
+                  if(formKey.currentState!.validate()){
+    
+                  }
+                },
+                text: 'change password' ),
+          ],
+          
+        ),
       ),
     ),
   ),
