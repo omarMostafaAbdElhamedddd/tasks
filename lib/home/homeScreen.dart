@@ -252,24 +252,33 @@ final Function() deletefunction;
           taskData["des"],
             style: TextStyle(color: Colors.black.withAlpha(150), fontSize: 14),
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 12,),
           Row(
             children: [
+              Text("Created At"),
+              Spacer(),
               Text(
                 DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
                     .format(DateTime.parse(taskData["created At"])),
                 style: TextStyle(color: Colors.black.withAlpha(150),
-                fontSize: 12,
-                  fontWeight: FontWeight.w500
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500
                 ),
               ),
+            ],
+          ),
+          SizedBox(height: 8,),
+
+          Row(
+            children: [
+              Text("due Date Time"),
               Spacer(),
               Text(
-                taskData["dueDateTime"],
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
+                    .format(DateTime.parse(taskData["dueDateTime"])),
+                style: TextStyle(color: Colors.black.withAlpha(150),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500
                 ),
               ),
             ],
