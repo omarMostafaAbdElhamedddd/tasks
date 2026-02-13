@@ -79,26 +79,7 @@ class LoginScreen extends StatelessWidget {
                           hintText:"Enter Password",
                         ),
       
-                        const SizedBox(height: 16),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.end,
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () {
-                        //         Navigator.push(
-                        //             context,PageRouteBuilder(pageBuilder:(context,an,sc){
-                        //           return ForgotPasswordScreen();
-                        //         })
-                        //         );
-                        //       },
-                        //       child: const Text(
-                        //         "Forgot Password?",
-                        //         style: TextStyle(color: Colors.blue),
-                        //         textAlign: TextAlign.start,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
+
                         const SizedBox(height: 30),
       
                         CustomButton(

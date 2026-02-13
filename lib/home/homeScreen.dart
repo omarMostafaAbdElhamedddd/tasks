@@ -253,10 +253,10 @@ final Function() deletefunction;
             style: TextStyle(color: Colors.black.withAlpha(150), fontSize: 14),
           ),
           SizedBox(height: 12,),
-          Row(
+          Wrap(
             children: [
               Text("Created At"),
-              Spacer(),
+             SizedBox(width: 16,),
               Text(
                 DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
                     .format(DateTime.parse(taskData["created At"])),
@@ -269,10 +269,10 @@ final Function() deletefunction;
           ),
           SizedBox(height: 8,),
 
-          Row(
+          Wrap(
             children: [
-              Text("due Date Time"),
-              Spacer(),
+              Text("Due Date Time"),
+              SizedBox(width: 16,),
               Text(
                 DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
                     .format(DateTime.parse(taskData["dueDateTime"])),

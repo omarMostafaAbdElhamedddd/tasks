@@ -46,10 +46,23 @@ dependencies:
   cloud_firestore: ^6.1.0
   flutter_svg: ^2.2.3
   intl: ^0.20.2
+  flutter_native_splash: ^2.3.7
 
+flutter_native_splash:
+  color: "#180236"
+  image: assets/logo.png
+  android: true
+  ios: true
+  web: false
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
