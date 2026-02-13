@@ -233,7 +233,7 @@ final Function() deletefunction;
 
                 onTap: (){
                   Navigator.push(context, PageRouteBuilder(pageBuilder:(context,an,sc){
-                    return AddTaskScreen();
+                    return AddTaskScreen(isEdit: true,taskData: taskData,);
                   }));
                 },
                 child: Container(

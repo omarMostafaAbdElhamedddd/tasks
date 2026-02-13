@@ -7,7 +7,11 @@ import 'package:tasks/helper/customWidgets/customButton.dart';
 import '../helper/customWidgets/fullPageLoading.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+  const AddTaskScreen({super.key,this.isEdit=false,this.taskData});
+
+  final bool isEdit;
+  final dynamic? taskData;
+
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -18,7 +22,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Get.put(AddNewTaskModel());
+    final vm = Get.put(AddNewTaskModel(data: widget.taskData));
 
     return Obx(() => Stack(
       children: [
@@ -30,7 +34,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               padding:
               const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               child: CustomButton(
-                text: "Add Task",
+                text:widget.isEdit ? "Edit task" :"Add Task",
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     vm.addnewTask(context);
@@ -43,8 +47,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             scrolledUnderElevation: 0,
             backgroundColor: AppColors.whiteColor,
             elevation: 0,
-            title: const Text(
-              "Add task",
+            title:  Text(
+              widget.isEdit ? "Edit task" :"Add Task",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ),

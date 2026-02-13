@@ -40,7 +40,7 @@ class LoginViewModel extends GetxController {
             password: passwordController.text,
           );
 
-      Navigator.push(context, PageRouteBuilder(pageBuilder:(context,an,sc){
+      Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder:(context,an,sc){
         return HomeScreen();
       }));
     } on FirebaseAuthException {

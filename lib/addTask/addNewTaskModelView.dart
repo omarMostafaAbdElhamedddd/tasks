@@ -2,12 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../helper/custom_snack_bar.dart';
 
 class AddNewTaskModel extends GetxController {
+  final dynamic? data;
+
+  AddNewTaskModel({required this.data});
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    setTaskData();
+  }
+
   TextEditingController nameController = TextEditingController();
   TextEditingController desController = TextEditingController();
-
   final RxBool isLoading = false.obs;
   final RxBool succes = false.obs;
 
@@ -19,7 +30,25 @@ class AddNewTaskModel extends GetxController {
   String get dueDateText {
     if (dueDateTime.value == null) return "Due date & time";
     final d = dueDateTime.value!;
-    return "${d.day}/${d.month}/${d.year}   ${d.hour}:${d.minute.toString().padLeft(2, '0')}";
+    return d.toString();
+  }
+
+  void setTaskData (){
+    // dynamic date =        DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
+    //     .format(DateTime.parse(data["dueDateTime"]));
+
+   if(data!=null){
+     nameController.text = data!["name"];
+     desController.text =data!["des"];
+     reminderMinutes.value = data["rememberMinutes"];
+
+     // dueDateTime.value =   date;
+
+
+
+
+   }
+
   }
 
   Future<void> pickDueDateTime(BuildContext context) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tasks/helper/color.dart';
 
 
@@ -22,12 +23,22 @@ class NotoficationScreen extends StatelessWidget {
             )
           ],
         ),
-        body: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          itemBuilder: (context, index) {
-            return  NotoficationItem ();
-          },
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              SvgPicture.asset("assets/noData.svg", height: 130,),
+              SizedBox(height: 12,),
+              Text("No notofications added yet!"),
+              ],
+              ),
         ));
+        // ListView.builder(
+        //   padding: EdgeInsets.symmetric(horizontal: 16),
+        //   itemBuilder: (context, index) {
+        //     return  NotoficationItem ();
+        //   },
+        // ));
   }
 }
 class NotoficationItem extends StatelessWidget {

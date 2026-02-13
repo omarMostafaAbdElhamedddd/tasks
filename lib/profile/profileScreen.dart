@@ -133,7 +133,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "Change your pasword",
+                      "Change your password",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
