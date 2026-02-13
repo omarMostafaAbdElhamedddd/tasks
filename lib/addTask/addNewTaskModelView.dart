@@ -78,9 +78,10 @@ class AddNewTaskModel extends GetxController {
         succes.value = true;
       MessageUtils.showSnackBar(
         context: context,
-        message: "task add succesfly",
+        message: "task added succesfly",
         baseStatus: BaseStatus.success,
-      );
+      ); 
+      Navigator.pop(context);
         resetForm();
       }
     } catch (e) {

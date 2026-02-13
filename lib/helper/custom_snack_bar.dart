@@ -16,12 +16,7 @@ class MessageUtils {
           fontSize: 14
         ),
       ),
-      action: SnackBarAction(
-        label: "Cancel",
-        textColor: Colors.white,
-        onPressed: () =>
-            ScaffoldMessenger.of(context).clearSnackBars(),
-      ),
+
       backgroundColor: baseStatus == BaseStatus.error
           ? Colors.red
           : AppColors.primaryColor,

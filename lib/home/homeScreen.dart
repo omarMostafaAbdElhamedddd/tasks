@@ -12,9 +12,48 @@ import 'package:tasks/notofications/notoficationScreen.dart';
 import '../helper/customWidgets/fullPageLoading.dart';
 import '../profile/profileScreen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+ void showDeleteDialog(int index) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Delete Task"),
+        content: Text("Are you sure you want to delete this task?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close dialog
+            },
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                
+              });
+              Navigator.pop(context); // Close dialog
+            },
+            child: Text(
+              "Delete",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+    
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: sna.data!.docs.length,
                             itemBuilder: (context, index) {
-                              return TaskItemWidget(taskData: sna.data!.docs[index],);
+                              return TaskItemWidget(taskData: sna.data!.docs[index],deletefunction: showDeleteDialog,);
                             },
                           ),
                         );
@@ -114,8 +153,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class TaskItemWidget extends StatelessWidget {
-  const TaskItemWidget({super.key, required this.taskData});
-
+  const TaskItemWidget({super.key, required this.taskData, required this.deletefunction});
+final dynamic deletefunction;
   final dynamic taskData;
   @override
   Widget build(BuildContext context) {
@@ -138,15 +177,22 @@ class TaskItemWidget extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red.withAlpha(30)
-                  ),
-                  child: Icon(Icons.delete_forever, size: 22,color: Colors.red,)),
+              
+              GestureDetector(
+                onTap: (){
+                  deletefunction();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red.withAlpha(30)
+                    ),
+                    child: Icon(Icons.delete_forever, size: 22,color: Colors.red,)),
+              ),
               SizedBox(width: 16,),
               InkWell(
+
                 onTap: (){
                   Navigator.push(context, PageRouteBuilder(pageBuilder:(context,an,sc){
                     return AddTaskScreen();
