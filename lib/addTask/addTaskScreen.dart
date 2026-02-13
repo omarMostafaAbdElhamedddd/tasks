@@ -23,7 +23,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Get.put(AddNewTaskModel(data: widget.taskData));
+    if (Get.isRegistered<AddNewTaskModel>()) {
+      Get.delete<AddNewTaskModel>();
+    }
+
+    final AddNewTaskModel vm = Get.put(AddNewTaskModel(data:widget.taskData ));
 
     return Obx(() => Stack(
       children: [
