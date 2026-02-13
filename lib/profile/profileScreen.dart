@@ -79,8 +79,6 @@ class ProfileScreen extends StatelessWidget {
                     return SizedBox();
                   }
 
-
-
                 }),
 
 
@@ -147,25 +145,30 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
 
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey.withAlpha(30),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.withAlpha(160)),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Go to your tasks",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withAlpha(30),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.withAlpha(160)),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      "Go to your tasks",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
-                ],
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 32),

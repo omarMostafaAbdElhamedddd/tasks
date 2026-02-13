@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:tasks/home/homeScreen.dart';
 import 'package:tasks/signup/signupScreen.dart';
 
 import '../forgetPassword/forgetpasswordscreen.dart';

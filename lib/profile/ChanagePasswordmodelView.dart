@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../helper/custom_snack_bar.dart';
 
 
@@ -11,24 +10,10 @@ class ChanagePasswordModelView extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GlobalKey<FormState> changePasswordFormKey = GlobalKey<FormState>();
-
   final TextEditingController currentPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-
   final RxBool isChangingPassword = false.obs;
-  final RxBool isCurrentPasswordHidden = true.obs;
-  final RxBool isNewPasswordHidden = true.obs;
-  final RxBool isConfirmPasswordHidden = true.obs;
-
-  void toggleCurrentPasswordVisibility() =>
-      isCurrentPasswordHidden.value = !isCurrentPasswordHidden.value;
-
-  void toggleNewPasswordVisibility() =>
-      isNewPasswordHidden.value = !isNewPasswordHidden.value;
-
-  void toggleConfirmPasswordVisibility() =>
-      isConfirmPasswordHidden.value = !isConfirmPasswordHidden.value;
 
   String? validatePassword(String? value) {
     final text = value?.trim() ?? '';
@@ -58,14 +43,6 @@ class ChanagePasswordModelView extends GetxController {
     if (!(changePasswordFormKey.currentState?.validate() ?? false)) return;
 
     final user = _auth.currentUser;
-    if (user == null) {
-      MessageUtils.showSnackBar(
-        context: context,
-        baseStatus: BaseStatus.error,
-        message: "Failed to update password",
-      );
-      return;
-    }
 
     final currentPassword = currentPasswordController.text.trim();
     final newPassword = newPasswordController.text.trim();
@@ -74,7 +51,7 @@ class ChanagePasswordModelView extends GetxController {
       isChangingPassword.value = true;
 
       final credential = EmailAuthProvider.credential(
-        email: user.email!,
+        email: user!.email!,
         password: currentPassword,
       );
 
@@ -84,7 +61,7 @@ class ChanagePasswordModelView extends GetxController {
       MessageUtils.showSnackBar(
         context: context,
         baseStatus: BaseStatus.success,
-        message:"password Updated successfully",
+        message:"Password Updated successfully",
       );
 
       currentPasswordController.clear();
@@ -97,13 +74,13 @@ class ChanagePasswordModelView extends GetxController {
         MessageUtils.showSnackBar(
           context: context,
           baseStatus: BaseStatus.error,
-          message: "Wrong Password",
+          message: "Currect password incorrect",
         );
       } else {
         MessageUtils.showSnackBar(
           context: context,
           baseStatus: BaseStatus.error,
-          message: e.message??"",
+          message: "Something went wrong",
         );
       }
     } catch (e) {
