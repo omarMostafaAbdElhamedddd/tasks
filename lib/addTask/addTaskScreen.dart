@@ -7,10 +7,11 @@ import 'package:tasks/helper/customWidgets/customButton.dart';
 import '../helper/customWidgets/fullPageLoading.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key,this.isEdit=false,this.taskData});
+  const AddTaskScreen({super.key,this.isEdit=false,this.taskData, this.taskId});
 
   final bool isEdit;
   final dynamic? taskData;
+  final String? taskId;
 
 
   @override
@@ -37,7 +38,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 text:widget.isEdit ? "Edit task" :"Add Task",
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    vm.addnewTask(context);
+                   if(widget.isEdit){
+                     vm.editTask(context, widget.taskId!);
+                   }else{
+                     vm.addnewTask(context);
+                   }
                   }
                 },
               ),

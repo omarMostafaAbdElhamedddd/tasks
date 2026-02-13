@@ -124,6 +124,46 @@ class AddNewTaskModel extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> editTask(BuildContext context, String id) async {
+    isLoading.value = true;
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        final taskData = {
+          'uid': user.uid,
+          'name': nameController.text,
+          'des': desController.text,
+          'created At': DateTime.now().toIso8601String(),
+          "dueDateTime": dueDateText,
+          "rememberMinutes": reminderMinutes.value,
+        };
+
+        await FirebaseFirestore.instance.collection('tasks').doc(id).update(taskData);
+
+        succes.value = true;
+        MessageUtils.showSnackBar(
+          context: context,
+          message: "task edited succesfly",
+          baseStatus: BaseStatus.success,
+        );
+        Navigator.pop(context);
+        resetForm();
+      }
+    } catch (e) {
+      MessageUtils.showSnackBar(
+        message: "Failed To edit task",
+        baseStatus: BaseStatus.error,
+        context: context,
+      );
+    }
+
+    isLoading.value = false;
+  }
+
+
+
   void resetForm() {
     nameController.clear();
     desController.clear();

@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return TaskItemWidget(taskData: sna.data!.docs[index],deletefunction: (){
                                 showDeleteDialog(sna.data!.docs[index].id);
-                              },);
+                              },taskId:sna.data!.docs[index].id ,);
                             },
                           ),
                         );
@@ -191,9 +191,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class TaskItemWidget extends StatelessWidget {
-  const TaskItemWidget({super.key, required this.taskData, required this.deletefunction});
+  const TaskItemWidget({super.key, required this.taskData, required this.deletefunction, required this.taskId});
 final Function() deletefunction;
   final dynamic taskData;
+  final String taskId;
   @override
   Widget build(BuildContext context) {
 
@@ -233,7 +234,7 @@ final Function() deletefunction;
 
                 onTap: (){
                   Navigator.push(context, PageRouteBuilder(pageBuilder:(context,an,sc){
-                    return AddTaskScreen(isEdit: true,taskData: taskData,);
+                    return AddTaskScreen(isEdit: true,taskData: taskData,taskId:taskId ,);
                   }));
                 },
                 child: Container(
