@@ -1,7 +1,10 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:tasks/home/homeScreen.dart';
 import 'package:tasks/login/loginScreen.dart';
 
@@ -21,6 +24,7 @@ Future<void> main() async {
     ),
   ]);
 
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarBrightness: Brightness.dark
@@ -36,6 +40,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+        locale: const Locale('en', 'EG'),
+        supportedLocales: const [Locale('en', 'EG')],
+        localizationsDelegates: [
+          CountryLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
       home:FirebaseAuth.instance.currentUser?.uid ==null? LoginScreen() : HomeScreen()
     );
   }

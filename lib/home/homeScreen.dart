@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:tasks/addTask/addTaskScreen.dart';
 import 'package:tasks/helper/color.dart';
 import 'package:tasks/helper/customWidgets/customButton.dart';
@@ -118,6 +119,7 @@ class TaskItemWidget extends StatelessWidget {
   final dynamic taskData;
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -169,7 +171,8 @@ class TaskItemWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                taskData["created At"],
+                DateFormat('EEEE d MMMM yyyy - hh:mm a', 'en')
+                    .format(DateTime.parse(taskData["created At"])),
                 style: TextStyle(color: Colors.black.withAlpha(150),
                 fontSize: 12,
                   fontWeight: FontWeight.w500
